@@ -4,7 +4,7 @@
 	创建一个线程池
 */
 
-#define MAX_THREAD 100
+#define MAX_THREAD 200
 
 struct Task {
 	int id;

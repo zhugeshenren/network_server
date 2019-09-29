@@ -14,6 +14,8 @@ using namespace std;
 int main(void)
 {
 	Server myServer;
+
+	cout << "服务器打开, 最大连接数200\n";
 	myServer.start();
 
 	return 0;
@@ -24,11 +26,3 @@ int main(void)
 
 //char add[64] = "C:/Users/R/Desktop/net_homework/send_file/calculus.pdf";
 
-void get_size(char add[64]) {
-	ifstream mySource;
-	mySource.open(add, ios_base::binary);
-	mySource.seekg(0, ios_base::end);
-	int size = mySource.tellg();
-	mySource.close();
-	cout << size;
-}

@@ -19,7 +19,7 @@ struct pack {
 class ClientConn
 {
 public:
-	ClientConn(int, SOCKET);
+	ClientConn(int, SOCKET,int);
 	~ClientConn();
 
 	void start();
@@ -57,9 +57,12 @@ public:
 	void message_fun();
 
 
-	void send_data(std::streamsize,char *);
+	void send_data(std::streamsize,char *,int);
 
 	bool send_file(std::string name);
+
+
+	int client_id;
 
 private:
 
