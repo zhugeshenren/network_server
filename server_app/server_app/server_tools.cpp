@@ -213,13 +213,26 @@ void ClientConn::recv_fun()
 		// 1 代表 message 传输
 		// 2 代表 file 文件传输
 		
-		char* new_str = Tools::copy_chars(buf, 1,retVal);
-		pack* p = new pack(10,new_str);
+		char* new_str = Tools::copy_datas(buf, 1, retVal);
+		pack* p = new pack(retVal-1,new_str);
+
 
 		{
 			std::lock_guard<std::mutex> lock(this->mutex_recv_pool);
 			(*this->recv_pool)[sign_1 - 1].push(p);
-			this->condition_message.notify_one();
+
+			// 这里以后可以变成按索引唤醒的 , 以期将协议处理程序与客户端类分离开来
+			switch (sign_1)
+			{
+			case 1:
+				this->condition_message.notify_one();
+				break;
+			case 2:
+				this->condition_file.notify_one();
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
@@ -280,13 +293,19 @@ void ClientConn::message_fun()
 			std::queue<pack*>* que = &(*this->recv_pool)[0];
 			while (!que->empty())
 			{
-				char* str = que->front()->data;
 				pack* p = que->front();
+
+				
+				// 输出信息
+				for (size_t i = 0; i < p->len; i++)
+				{
+					std::cout << p->data[i];
+				}
+				
 				que->pop();
+				std::cout << '\n';
 
-				std::cout << str << '\n';
-
-				delete[] str;
+				delete[] p->data;
 				delete p;
 			}
 		}

@@ -36,7 +36,7 @@ public:
 
 	std::thread* file_thread;
 	std::thread* message_thread;
-	std::condition_variable  condition_file;
+	std::condition_variable condition_file;
 	std::condition_variable condition_message;
 
 
@@ -86,7 +86,7 @@ private:
 
 	std::map<int, ClientConn*> runing_client;
 
-	ThreadPool *pool;
+	ThreadPool * pool;
 };
 
 
