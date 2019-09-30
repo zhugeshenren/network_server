@@ -93,7 +93,7 @@ void Server::listen_conn()
 	}
 
 	//启动监听 , 并且最大允许20个连接
-	retVal = listen(this->socket_server, 20);
+	retVal = listen(this->socket_server, 200);
 	if (SOCKET_ERROR == retVal)
 	{
 		std::cout << "listen failed!" << std::endl;
@@ -129,7 +129,7 @@ void Server::listen_conn()
 		std::pair<int, ClientConn*> value(th_id, cc);
 		runing_client.insert(value);
 
-		std::cout << client_count << "号,已连接上\n";
+		std::cout << th_id << "号,已连接上\n";
 		std::cout << "等待下一个连接....\n";
 
 	}
@@ -277,6 +277,8 @@ void ClientConn::send_fun()
 			}
 		}
 	}
+
+	this->~ClientConn();
 }
 
 void ClientConn::file_fun()
